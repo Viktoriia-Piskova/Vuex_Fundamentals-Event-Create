@@ -38,7 +38,7 @@
       <label>Time</label>
       <input v-model="event.time" type="text" placeholder="Time" />
 
-      <label>Time</label>
+      <label>Organiser {{ event.organiser }}</label>
       <input v-model="event.organiser" type="text" placeholder="Time" />
 
       <button type="submit">Submit</button>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from 'uuid'
+import EventService from '@/services/EventService.js'
 export default {
   data() {
     return {
@@ -67,13 +69,22 @@ export default {
         location: '',
         date: '',
         time: '',
-        organiser: this.$store.state.user
+        organiser: ''
       }
     }
   },
   methods: {
     onSubmit() {
+      this.event.id = uuidv4()
+      this.event.organiser = this.$store.state.organiser
       console.log('Event:', this.event)
+      EventService.postEvent(this.event)
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   }
 }
