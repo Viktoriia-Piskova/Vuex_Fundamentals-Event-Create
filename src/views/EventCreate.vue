@@ -43,6 +43,7 @@
 
       <button type="submit">Submit</button>
     </form>
+    <p>Your events: {{ userEvents }}</p>
   </div>
 </template>
 
@@ -70,7 +71,8 @@ export default {
         date: '',
         time: '',
         organiser: ''
-      }
+      },
+      userEvents: []
     }
   },
   methods: {
@@ -81,6 +83,7 @@ export default {
         .then(() => {
           this.$store.commit('ADD_EVENT', this.event)
           console.log(this.$store.state.events)
+          this.userEvents = this.$store.state.events
         })
         .catch(error => {
           console.log(error)
