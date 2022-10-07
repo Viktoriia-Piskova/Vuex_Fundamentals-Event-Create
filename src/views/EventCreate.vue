@@ -43,13 +43,12 @@
 
       <button type="submit">Submit</button>
     </form>
-    <p>Your events: {{ userEvents }}</p>
   </div>
 </template>
 
 <script>
-import { v4 as uuidv4 } from 'uuid'
-import EventService from '@/services/EventService.js'
+import { v4 as uuidv4 } from 'uuid' //     generating ids module
+//import EventService from '@/services/EventService.js' //     for API calls
 export default {
   data() {
     return {
@@ -71,23 +70,17 @@ export default {
         date: '',
         time: '',
         organiser: ''
-      },
-      userEvents: []
+      }
     }
   },
   methods: {
     onSubmit() {
-      this.event.id = uuidv4()
-      this.event.organiser = this.$store.state.organiser
-      EventService.postEvent(this.event)
-        .then(() => {
-          this.$store.commit('ADD_EVENT', this.event)
-          console.log(this.$store.state.events)
-          this.userEvents = this.$store.state.events
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      const event = {
+        ...this.event,
+        id: uuidv4(),
+        organiser: this.$store.state.organiser
+      }
+      this.$store.dispatch('createEvent', event)
     }
   }
 }

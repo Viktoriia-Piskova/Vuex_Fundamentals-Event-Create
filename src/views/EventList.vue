@@ -4,7 +4,7 @@
     <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
   <div>
-    <!-- <p>Your events: {{ this.$store.state.events }}</p> -->
+    <p>Your events: {{ userEvents }}</p>
   </div>
 </template>
 
@@ -19,13 +19,15 @@ export default {
   },
   data() {
     return {
-      events: null
+      events: null,
+      userEvents: []
     }
   },
   created() {
     EventService.getEvents()
       .then(response => {
         this.events = response.data
+        this.userEvents = this.$store.state.events
       })
       .catch(error => {
         console.log(error)
