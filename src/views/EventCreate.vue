@@ -77,10 +77,10 @@ export default {
     onSubmit() {
       this.event.id = uuidv4()
       this.event.organiser = this.$store.state.organiser
-      console.log('Event:', this.event)
       EventService.postEvent(this.event)
-        .then(response => {
-          console.log(response)
+        .then(() => {
+          this.$store.commit('ADD_EVENT', this.event)
+          console.log(this.$store.state.events)
         })
         .catch(error => {
           console.log(error)
