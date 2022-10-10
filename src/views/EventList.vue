@@ -3,35 +3,26 @@
   <div class="events">
     <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
-  <div>
-    <p>Your events: {{ userEvents }}</p>
-  </div>
+  <div></div>
 </template>
 
 <script>
-//import createStore from '@/store/index.js'
 import EventCard from '@/components/EventCard.vue'
-import EventService from '@/services/EventService.js'
 export default {
   name: 'EventList',
+  data() {
+    return {}
+  },
+  created() {
+    this.$store.dispatch('fetchEvents')
+  },
   components: {
     EventCard
   },
-  data() {
-    return {
-      events: null,
-      userEvents: []
+  computed: {
+    events() {
+      return this.$store.state.events
     }
-  },
-  created() {
-    EventService.getEvents()
-      .then(response => {
-        this.events = response.data
-        this.userEvents = this.$store.state.events
-      })
-      .catch(error => {
-        console.log(error)
-      })
   }
 }
 </script>

@@ -4,6 +4,6 @@ import router from './router'
 import store from './store'
 
 createApp(App)
-  .use(store)
+  .use(store) //injects Vuex into all components
   .use(router)
   .mount('#app')

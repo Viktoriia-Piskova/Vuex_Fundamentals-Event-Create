@@ -1,12 +1,11 @@
 <template>
-  <h1>Create an event</h1>
-
+  <h1>Hello, {{ userName }}! Create your event</h1>
   <div class="form-container">
     <form @submit.prevent="onSubmit">
       <label>Select a category: </label>
       <select v-model="event.category">
         <option
-          v-for="option in categories"
+          v-for="option in categoriesList"
           :value="option"
           :key="option"
           :selected="option === event.category"
@@ -39,7 +38,7 @@
       <input v-model="event.time" type="text" placeholder="Time" />
 
       <label>Organiser {{ event.organiser }}</label>
-      <input v-model="event.organiser" type="text" placeholder="Time" />
+      <input v-model="event.organiser" type="text" :placeholder="userName" />
 
       <button type="submit">Submit</button>
     </form>
@@ -48,19 +47,10 @@
 
 <script>
 import { v4 as uuidv4 } from 'uuid' //     generating ids module
-//import EventService from '@/services/EventService.js' //     for API calls
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      categories: [
-        'sustainability',
-        'nature',
-        'animal welfare',
-        'housing',
-        'education',
-        'food',
-        'community'
-      ],
       event: {
         id: '',
         category: '',
@@ -73,6 +63,11 @@ export default {
       }
     }
   },
+
+  computed: mapState({
+    userName: state => state.user.name,
+    categoriesList: 'categories'
+  }),
   methods: {
     onSubmit() {
       const event = {
