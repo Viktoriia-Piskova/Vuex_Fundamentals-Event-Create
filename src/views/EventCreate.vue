@@ -1,11 +1,11 @@
 <template>
-  <h1>Hello, {{ userName }}! Create your event</h1>
+  <h1>Hello, {{ user.name }}! Create your event</h1>
   <div class="form-container">
     <form @submit.prevent="onSubmit">
       <label>Select a category: </label>
       <select v-model="event.category">
         <option
-          v-for="option in categoriesList"
+          v-for="option in categories"
           :value="option"
           :key="option"
           :selected="option === event.category"
@@ -38,7 +38,7 @@
       <input v-model="event.time" type="text" placeholder="Time" />
 
       <label>Organiser {{ event.organiser }}</label>
-      <input v-model="event.organiser" type="text" :placeholder="userName" />
+      <input v-model="event.organiser" type="text" :placeholder="user.name" />
 
       <button type="submit">Submit</button>
     </form>
@@ -64,10 +64,11 @@ export default {
     }
   },
 
-  computed: mapState({
-    userName: state => state.user.name,
-    categoriesList: 'categories'
-  }),
+  computed: mapState(
+    ['categories', 'user']
+    // {user: 'user',
+    // categories: 'categories'}
+  ),
   methods: {
     onSubmit() {
       const event = {
